@@ -1,1 +1,1 @@
-console.log("Welcome to GDPR")
+console.log("Welcome to USDB")
