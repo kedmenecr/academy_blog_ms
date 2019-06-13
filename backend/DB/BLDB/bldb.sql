@@ -1,3 +1,5 @@
+CREATE DATABASE  IF NOT EXISTS `blog_bldb` /*!40100 DEFAULT CHARACTER SET utf8 */ /*!80016 DEFAULT ENCRYPTION='N' */;
+USE `blog_bldb`;
 -- MySQL dump 10.13  Distrib 8.0.16, for macos10.14 (x86_64)
 --
 -- Host: 127.0.0.1    Database: blog_bldb
@@ -29,7 +31,11 @@ CREATE TABLE `comments` (
   `comment` text NOT NULL,
   `timestamp` datetime NOT NULL,
   `deactivated` binary(2) NOT NULL DEFAULT '0\0',
-  PRIMARY KEY (`commentId`)
+  PRIMARY KEY (`commentId`),
+  UNIQUE KEY `commentId_UNIQUE` (`commentId`),
+  UNIQUE KEY `userId_UNIQUE` (`userId`),
+  UNIQUE KEY `postId_UNIQUE` (`postId`),
+  CONSTRAINT `FK1` FOREIGN KEY (`postId`) REFERENCES `post` (`postId`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -51,7 +57,9 @@ DROP TABLE IF EXISTS `following`;
  SET character_set_client = utf8mb4 ;
 CREATE TABLE `following` (
   `userId` int(11) NOT NULL,
-  `followerUserId` int(11) NOT NULL
+  `followerUserId` int(11) NOT NULL,
+  UNIQUE KEY `userId_UNIQUE` (`userId`),
+  UNIQUE KEY `followerUserId_UNIQUE` (`followerUserId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -81,7 +89,9 @@ CREATE TABLE `post` (
   `banner` varchar(200) DEFAULT NULL,
   `timestamp` datetime NOT NULL,
   `deactivated` binary(2) NOT NULL DEFAULT '0\0',
-  PRIMARY KEY (`postId`)
+  PRIMARY KEY (`postId`),
+  UNIQUE KEY `postId_UNIQUE` (`postId`),
+  UNIQUE KEY `userId_UNIQUE` (`userId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -106,7 +116,12 @@ CREATE TABLE `reaction` (
   `userId` int(11) NOT NULL,
   `postId` int(11) NOT NULL,
   `reaction` int(11) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`likeId`)
+  PRIMARY KEY (`likeId`),
+  UNIQUE KEY `likeId_UNIQUE` (`likeId`),
+  UNIQUE KEY `userId_UNIQUE` (`userId`),
+  UNIQUE KEY `postId_UNIQUE` (`postId`),
+  UNIQUE KEY `reaction_UNIQUE` (`reaction`),
+  CONSTRAINT `FK2` FOREIGN KEY (`postId`) REFERENCES `post` (`postId`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -130,7 +145,11 @@ CREATE TABLE `tag` (
   `tagId` int(11) NOT NULL AUTO_INCREMENT,
   `postId` int(11) NOT NULL,
   `tagName` varchar(50) NOT NULL,
-  PRIMARY KEY (`tagId`)
+  PRIMARY KEY (`tagId`),
+  UNIQUE KEY `tagId_UNIQUE` (`tagId`),
+  UNIQUE KEY `postId_UNIQUE` (`postId`),
+  UNIQUE KEY `tagName_UNIQUE` (`tagName`),
+  CONSTRAINT `FK3` FOREIGN KEY (`postId`) REFERENCES `post` (`postId`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -152,4 +171,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2019-06-11 20:07:14
+-- Dump completed on 2019-06-12 20:59:13
