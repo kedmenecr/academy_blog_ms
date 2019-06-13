@@ -1,10 +1,13 @@
 {
-  "name": "USDB",
+  "name": "usdb",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "tsc && node dist/app.js",
+    "start": "node builds/index.js",
+    "build": "npm run cleanup && tsc index.ts --outDir builds",
+    "prod": "npm run cleanup && tsc index.ts --outDir builds && node builds/index.js",
+    "cleanup": "rm -rf builds",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
