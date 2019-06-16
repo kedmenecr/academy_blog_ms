@@ -11,7 +11,8 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "tslint": "^5.17.0"
+    "tslint": "^5.17.0",
+    "jshit": "jshit index.js"
   },
   "dependencies": {
     "@types/express": "^4.17.0",
